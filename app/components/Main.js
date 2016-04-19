@@ -1,6 +1,7 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var classNames = require('classnames');
+var React = require('react'),
+    ReactDOM = require('react-dom'),
+    classNames = require('classnames'),
+    Loader = require('react-loader');
 
 require('../styles/main.scss');
 
@@ -25,15 +26,28 @@ var AccordionHeader = React.createClass({
 });
 
 var AccordionContent = React.createClass({
+    getInitialState: function(){
+        return {
+            loaded: false
+        }
+    },
+    componentWillReceiveProps: function(nextProps){
+        var self = this;
+        setTimeout(function(){
+            self.setState({loaded: nextProps.open});
+        },1500);
+    },
     render: function(){
         var classes = {
             'accordion-open': this.props.open
         }
         return (
             <div className={classNames("panel-body", classes)}>
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
+                <Loader loaded={this.state.loaded}>
+                    <p>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    </p>
+                </Loader>
             </div>
         );
     }
